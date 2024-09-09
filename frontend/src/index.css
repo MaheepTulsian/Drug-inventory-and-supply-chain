@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* NotFound.css */
+body {
+    overflow: hidden;
+    /* Hides the scrollbar */
+}
+
+.full-screen {
+    height: 100vh;
+    /* Full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212;
+    /* Dark background for dark mode */
+    color: white;
+    /* Text color */
+    text-align: center;
+    /* Center align text */
+}
