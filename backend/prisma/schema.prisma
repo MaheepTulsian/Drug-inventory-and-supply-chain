@@ -52,8 +52,9 @@ model Batch {
   manufacture_date DateTime
   expiry_date      DateTime
   expiry_status    String
-  strip_quantity    Int
-  tablets_per_strip Int
+  quantity         Int  
+  strip_quantity    Int @default(0)
+  tablets_per_strip Int @default(0)
   mrp              Float
   selling_price    Float
   cost_price       Float
