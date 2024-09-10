@@ -9,6 +9,66 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+
+model Manufacturer {
+  manufacturer_id String    @id @default(auto()) @map("_id") @db.ObjectId
+  company_name    String
+  email           String   @unique
+  phone           String
+  website         String?
+  GST_No          String    @unique
+  address         Address[] // One-to-many relationship with Address
+  product         ProductCategory[] // One-to-many relationship with ProductCategory
+}
+
+model Address {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  street          String
+  city            String
+  state           String
+  postal_code     String
+  country         String
+  manufacturer_id String       @db.ObjectId // Foreign key
+  manufacturer    Manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id])
+}
+
+model ProductCategory {
+  category_name    String
+  medicine_id      String @id @default(auto()) @map("_id") @db.ObjectId
+  medicine_name    String
+  batches          Batch[]
+  sales            Sale[]
+  manufacturer     Manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id])
+  manufacturer_id  String @db.ObjectId
+}
+
+
+model Batch {
+  batch_id         String @id @default(auto()) @map("_id") @db.ObjectId
+  manufacture_date DateTime
+  expiry_date      DateTime
+  expiry_status    String
+  strip_quantity    Int
+  tablets_per_strip Int
+  mrp              Float
+  selling_price    Float
+  cost_price       Float
+  batch_status     String
+  product          ProductCategory @relation(fields: [medicine_id], references: [medicine_id])
+  medicine_id      String @db.ObjectId
+}
+
+model Sale {
+  sale_id          String @id @default(auto()) @map("_id") @db.ObjectId
+  sold_to          String
+  sale_date        DateTime
+  quantity_sold    Int
+  discount_rate    Float
+  final_price      Float
+  product          ProductCategory @relation(fields: [medicine_id], references: [medicine_id])
+  medicine_id      String @db.ObjectId
 }
