@@ -19,6 +19,7 @@ model Manufacturer {
   company_name    String
   email           String   @unique
   phone           String
+  password        String
   website         String?
   GST_No          String    @unique
   address         Address[] // One-to-many relationship with Address
