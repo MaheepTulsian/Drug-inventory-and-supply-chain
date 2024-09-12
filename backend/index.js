@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
-import router from "./Controller/index.js";
+import manufacturerRoute from "./Routes/manufacture";
 const app = express();
 dotenv.config();
 const Port = process.env.PORT || 8000;
@@ -14,8 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //router from manufacutur
+app.use('/api/manufacturer', manufacturerRoute);
 
-app.use("/v1/manufacture", router);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
