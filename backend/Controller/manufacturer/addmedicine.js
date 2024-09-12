@@ -1,7 +1,7 @@
 import prisma from "../../prisma/index.js";
 
 // add a medicine to the manufacturer
-exports.addMedicine = async (req, res, next) => {
+const addMedicine = async (req, res, next) => {
      const { medicine_name, category_name, manufacturer_id } = req.body;
      try {
        // Check if the manufacturer exists
@@ -39,7 +39,7 @@ exports.addMedicine = async (req, res, next) => {
 
 
 // create a batch to a medicine
-exports.addBatchToMedicine = async (req, res) => {
+const addBatchToMedicine = async (req, res) => {
      const { medicine_id } = req.params;
      const {
        batch_id,
@@ -102,7 +102,7 @@ exports.addBatchToMedicine = async (req, res) => {
 
 
    // to add medicne to the exixting batch   
-exports.addStockToMedicine = async (req, res) => {
+const addStockToMedicine = async (req, res) => {
      
      const { medicine_id } = req.params;
      const { batch_id, additional_stock } = req.body;
@@ -152,7 +152,7 @@ exports.addStockToMedicine = async (req, res) => {
 
 // to get all medicines for a manufacturer
 
-exports.getAllMedicines = async (req, res) => {
+const getAllMedicines = async (req, res) => {
      // Extract validation errors from the request
      const errors = validationResult(req);
      if (!errors.isEmpty()) {
@@ -197,3 +197,9 @@ exports.getAllMedicines = async (req, res) => {
      }
    };
    
+   export {
+    addMedicine,
+    addBatchToMedicine,
+    addStockToMedicine,
+    getAllMedicines
+   }

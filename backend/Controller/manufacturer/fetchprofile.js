@@ -1,6 +1,6 @@
 import prisma from "../../prisma/index.js";
 
-exports.getManufacturerById = async (req, res, next) => {
+const getManufacturerById = async (req, res, next) => {
      const { id } = req.params;
    
      try {
@@ -39,3 +39,7 @@ exports.getManufacturerById = async (req, res, next) => {
        next(error);
      }
    };
+
+   export{
+    getManufacturerById
+   }
