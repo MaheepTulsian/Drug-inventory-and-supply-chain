@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
-import manufacturerRoute from "./Routes/manufacture";
+import manufacturerRoute from "./Routes/manufacture.js";
 const app = express();
 dotenv.config();
 const Port = process.env.PORT || 8000;
