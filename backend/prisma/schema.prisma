@@ -63,7 +63,7 @@ model Batch {
   selling_price    Float
   cost_price       Float
   batch_status     String
-  medicine         MedicinesGallery @relation(fields: [medicine_id], references: [medicine_id])
+  medicines         MedicinesGallery @relation(fields: [medicine_id], references: [medicine_id])
   medicine_id      String    @db.ObjectId
 }
 
@@ -86,6 +86,8 @@ model Order {
   status           String    // e.g., 'pending', 'shipped', 'delivered'
   total_quantity   Int
   total_price      Float
+  
+
   manufacturer_id  String    @db.ObjectId
   manufacturer     Manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id])
   order_items      OrderItem[] // One-to-many relationship with OrderItem
