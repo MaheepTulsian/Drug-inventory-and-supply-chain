@@ -7,19 +7,6 @@ import jwt from "jsonwebtoken";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const getUserClaims = (req, res) => {
-  try {
-    const cookie = req.cookies["jwt"];
-
-    const claims = jwt.verify(cookie, process.env.ACCESS_TOKEN_SECRET_USER);
-    if (!claims) {
-      return null;
-    }
-    return claims;
-  } catch (error) {
-    return null;
-  }
-};
 
 const signup = asyncHandler(
   ("/signup",
