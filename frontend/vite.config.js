@@ -6,5 +6,6 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     include: ['lottie-react'],
+    include: ['react-pro-sidebar'],
   },
 })

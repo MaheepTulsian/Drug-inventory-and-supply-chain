@@ -1,6 +1,7 @@
 import React from 'react'
-import { LandingPage } from './pages'
-import { Navbar, Footer } from './components'
+import LandingPage from './pages/LandingPage'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
 const layout = () => {
   return (
@@ -12,4 +13,4 @@ const layout = () => {
   )
 }
 
-export default layout
+export default layout;

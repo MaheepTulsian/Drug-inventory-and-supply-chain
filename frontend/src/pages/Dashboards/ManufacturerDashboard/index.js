@@ -1,0 +1,35 @@
+// import Bar from "./scenes/bar/index";
+// import Line from "./scenes/line/index";
+// import Pie from "./scenes/pie/index";
+// import Dashboard from "./scenes/dashboard/index";
+// import DateTime from "./scenes/DateTime/index";
+// import Form from "./scenes/Form/index";
+// import Inventory from "./scenes/inventory/index";
+// import InventoryDetails from "./scenes/inventory/InventoryDetails";
+// import Orders from "./scenes/orders/index";
+// import OrderDetails from "./scenes/orders/OrderDetails";
+// import Profile from "./scenes/profile/index";
+// import Returns from "./scenes/returns/index";
+// import ReturnDetails from "./scenes/returns/ReturnDetails";
+// import Sales from "./scenes/sales/index";
+// import Sidebar from "./scenes/global/Sidebar";
+// import Topbar from "./scenes/global/Topbar";
+
+// export default { Bar, Line, Pie, Dashboard, DateTime, Form, Inventory, InventoryDetails, Orders, OrderDetails, Profile, Returns, ReturnDetails, Sales, Sidebar, Topbar };
+
+export { default as Bar } from "./scenes/bar/index";
+export { default as Line } from "./scenes/line/index";
+export { default as Pie } from "./scenes/pie/index";
+export { default as Dashboard } from "./scenes/dashboard/index";
+export { default as DateTime } from "./scenes/DateTime/index";
+export { default as Form } from "./scenes/Form/index";
+export { default as Inventory } from "./scenes/inventory/index";
+export { default as InventoryDetails } from "./scenes/inventory/InventoryDetails";
+export { default as Orders } from "./scenes/orders/index";
+export { default as OrderDetails } from "./scenes/orders/OrderDetails";
+export { default as Profile } from "./scenes/profile/index";
+export { default as Returns } from "./scenes/returns/index";
+export { default as ReturnDetails } from "./scenes/returns/ReturnDetails";
+export { default as Sales } from "./scenes/sales/index";
+export { default as Sidebar } from "./scenes/global/Sidebar";
+export { default as Topbar } from "./scenes/global/Topbar";
