@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
 import manufacturerRoute from "./Routes/manufacture.js";
+import wholesalerRoute from "./Routes/wholeseller.js";
 const app = express();
 dotenv.config();
 const Port = process.env.PORT || 8000;
@@ -14,8 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //router from manufacutur
-app.use('/api/manufacturer', manufacturerRoute);
-
+app.use("/api/manufacturer", manufacturerRoute);
+app.use("/api/wholeseller", wholesalerRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
