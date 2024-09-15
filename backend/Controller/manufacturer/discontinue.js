@@ -31,4 +31,4 @@ const discontinueManufacturerBatch = async (req, res) => {
      }
 }
 
-export default discontinueManufacturerBatch;
+export { discontinueManufacturerBatch};

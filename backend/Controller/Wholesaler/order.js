@@ -16,6 +16,7 @@ const createOrdertoManufacturer = async (req, res) => {
             medicine_id: item.medicine_id,
             quantity: item.quantity,
             selling_price: item.selling_price,
+            order_id: order.order_id,
           })),
         },
       },
@@ -100,4 +101,4 @@ const getOrderPlacedByWholesaler = async (req, res) => {
 };
 
 
-export { createOrdertoManufacturer, getallOrdersPlacedByWholesaler ,getOrderPlacedByWholesaler};
+export { createOrdertoManufacturer , getallOrdersPlacedByWholesaler , getOrderPlacedByWholesaler};

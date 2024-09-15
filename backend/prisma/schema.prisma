@@ -176,11 +176,14 @@ model Wholesaler_Batch {
 model Wholesaler_Sold {
   sale_id          String    @id @default(auto()) @map("_id") @db.ObjectId
   batch_id         String
-  sold_to          String
-  sale_date        DateTime
-  quantity_sold    Int
+  sold_to          String  @db.ObjectId  //retailer_id
+  sale_date        DateTime @default(now())
   discount_rate    Float?
-  final_price      Float
+  order_id          String
+  quantity         Int
+  status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
+  selling_price      Float
+  medicine_id      String    @db.ObjectId
   sold          Wholesaler @relation(fields: [wholesaler_id], references: [wholesaler_id])
   wholesaler_id      String    @db.ObjectId
 }
@@ -206,9 +209,9 @@ model Wholesaler_Order_received {
   order_id         String    @id @default(auto()) @map("_id") @db.ObjectId
   order_date       DateTime
   delivery_date    DateTime?
-  status           String    // e.g., 'pending', 'shipped', 'delivered'
+  status           String  @default("pending")  // e.g., 'pending', 'shipped', 'delivered'
   total_quantity   Int
-  total_price      Float
+  total_price      Float   @default(0.0) // Total price of all items in the order
   retailer_id      String    @db.ObjectId
   wholesaler_id    String    @db.ObjectId
   wholesaler       Wholesaler @relation(fields: [wholesaler_id], references: [wholesaler_id])
@@ -218,7 +221,7 @@ model Wholesaler_Order_received {
 model Wholesaler_Order_received_item {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
   order_id         String    @db.ObjectId
-  batch_id         String    @db.ObjectId
+  batch_id         String?    @db.ObjectId
   quantity         Int
   medicine_name    String
   medicine_id      String    @db.ObjectId
@@ -245,7 +248,9 @@ model Retailer {
   GST_No           String    @unique
   address          Retailer_Address[]  // One-to-many relationship with Address
   medicines        Retailer_Medicines[]  // One-to-many relationship with Medicines
-  orders           Retailer_Order[]  // One-to-many relationship with Order
+  orders           Retailer_Order[] 
+  bought           Retailer_Bought[]
+  sold             Retailer_Sold[] 
   order_received   Retailer_OrderReceived[]  // One-to-many relationship with OrderReceived (for tracking purchases from wholesalers)
 }
 
@@ -267,8 +272,6 @@ model Retailer_Medicines {
   medicine_name    String
   category_name    String
   batches          Retailer_Batch[]
-  bought           Retailer_Bought[]
-  sold             Retailer_Sold[]
   retailer         Retailer @relation(fields: [retailer_id], references: [retailer_id])
   retailer_id      String    @db.ObjectId
 }
@@ -278,41 +281,46 @@ model Retailer_Batch {
   batch_id         String    @unique
   manufacture_date DateTime
   expiry_date      DateTime
-  expiry_status    String
+  batch_status     String @default("Active")
   quantity         Int  
   current_stock    Int // Track remaining stock for this batch
-  reorder_threshold Int  // Minimum stock before reorder is triggered
+  reorder_threshold Int?  // Minimum stock before reorder is triggered
   strip_quantity   Int    @default(0)
   tablets_per_strip Int   @default(0)
   mrp              Float
-  selling_price    Float
+  selling_price    Float @default(0.0)
   cost_price       Float
-  batch_status     String
-  medicines        Retailer_Medicines @relation(fields: [medicine_id], references: [medicine_id])
+  medicines         Retailer_Medicines @relation(fields: [medicine_id], references: [medicine_id])
   medicine_id      String    @db.ObjectId
 }
 
 model Retailer_Sold {
   sale_id          String    @id @default(auto()) @map("_id") @db.ObjectId
   batch_id         String
-  sold_to          String
-  sale_date        DateTime
-  quantity_sold    Int
+  sold_to          String  @db.ObjectId  //retailer_id
+  sale_date        DateTime @default(now())
   discount_rate    Float?
-  final_price      Float
-  product          Retailer_Medicines @relation(fields: [medicine_id], references: [medicine_id])
+  order_id          String
+  quantity         Int
+  status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
+  selling_price      Float
   medicine_id      String    @db.ObjectId
+  sold            Retailer @relation(fields: [retailer_id], references: [retailer_id])
+  retailer_id      String    @db.ObjectId
 }
 
 model Retailer_Bought {
-  sale_id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  batch_id         String
-  bought_date      DateTime
-  quantity_bought  Int
-  discount_rate    Float?
-  final_price      Float
-  product          Retailer_Medicines @relation(fields: [medicine_id], references: [medicine_id])
-  medicine_id      String    @db.ObjectId
+  bought_id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  batch_id            String// One-to-many relationship with bought_batches
+  bought_date        DateTime @default(now())
+  discount_rate      Float?
+  cost_price      Float?
+   quantity     Int
+   status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
+  order_id          String
+  bought         Retailer @relation(fields: [retailer_id], references: [retailer_id])
+   retailer_id      String    @db.ObjectId
+   medicine_id      String    @db.ObjectId
 }
 
 model Retailer_Order {
