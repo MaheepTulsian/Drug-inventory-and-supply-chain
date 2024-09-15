@@ -9,6 +9,8 @@ import {
   updateWholesaler,
 } from "../Controller/Wholesaler/fetchprofile.js";
 
+import { createOrdertoManufacturer } from "../Controller/Wholesaler/order.js";
+
 router.route("/signup").post(upload.none(), signup);
 router.route("/login").post(upload.none(), login);
 router.route("/logout").get(upload.none(), logout);
@@ -17,5 +19,8 @@ router.route("/logout").get(upload.none(), logout);
 router.route("/wholesaler_profile").get(verifyJWT, getWholesalerById);
 //update wholesaler profile
 router.route("/update").put(verifyJWT, updateWholesaler);
+
+// create order to manufacturer
+router.route("/order/:wholesaler_id").post( createOrdertoManufacturer);
 
 export default router;
