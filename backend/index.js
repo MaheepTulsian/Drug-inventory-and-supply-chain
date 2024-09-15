@@ -1,11 +1,18 @@
 import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import manufacturerRoute from "./Routes/manufacture.js";
 import wholesalerRoute from "./Routes/wholeseller.js";
 const app = express();
 dotenv.config();
 const Port = process.env.PORT || 8000;
+
+//cors middleware
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 //regular express middleware
 app.use(express.json());
