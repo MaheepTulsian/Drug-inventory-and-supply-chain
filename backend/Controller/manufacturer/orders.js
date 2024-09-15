@@ -112,7 +112,7 @@ const checkAvailability = async (req, res) => {
             selling_price: 0,
           };
   
-          if (totalRequired < batch.current_stock) {
+          if (totalRequired < batch.current_stock && batch.status == 'Active') {
             medi.qty = batch.current_stock;
             medi.batch_id = batch.batch_id;
             medi.selling_price = batch.selling_price;
