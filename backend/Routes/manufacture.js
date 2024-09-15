@@ -40,6 +40,6 @@ router.route("/orders").get(verifyJWT, getOrdersReceivedByManufacturer);
 // Get a Single  Recieved Order by ID
 router.route("/order/:order_id").get(verifyJWT, getReceivedOrderById);
 //check for availability of medicines in stock before approving order
-router.route("/checkavailability").post(verifyJWT, checkAvailability);
+router.route("/checkavailability/:order_id").post(verifyJWT, checkAvailability);
 
 export default router;

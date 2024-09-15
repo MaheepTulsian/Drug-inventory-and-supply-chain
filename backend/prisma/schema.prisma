@@ -43,6 +43,8 @@ model Manufacturer_Address {
   city            String
   state           String
   postal_code     String
+  longitude       Float?
+  latitude        Float?
   country         String
   manufacturer_id String    @db.ObjectId // Foreign key
   manufacturer    Manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id])
@@ -61,7 +63,7 @@ model MedicinesGallery {
 model Batch {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
   batch_id         String    @unique
-  manufacture_date DateTime
+  manufacture_date DateTime  @default(now())
   expiry_date      DateTime
   expiry_status    String
   quantity         Int  
@@ -79,33 +81,28 @@ model Batch {
 
 model Sale {
   sale_id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  batch            sale_batch[] // One-to-many relationship with sale_batch
+  batch_id          String // One-to-many relationship with sale_batch
   sold_to          String  @db.ObjectId  //wholesaler_id
   sale_date        DateTime @default(now())
   discount_rate    Float?
-  final_price      Float
+  order_id          String
+  quantity          Int
+  status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
+  selling_price    Float
   product          MedicinesGallery @relation(fields: [medicine_id], references: [medicine_id])
   medicine_id      String    @db.ObjectId
 }
 
 
-model sale_batch{
-  id               String    @id @default(auto()) @map("_id") @db.ObjectId
-  batch_id         String   @db.ObjectId
-  quantity         Int
-  sale            Sale @relation(fields: [sale_id], references: [sale_id])
-  sale_id         String    @db.ObjectId
-}
-
 model Order_Received {
   order_id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  order_date       DateTime
+  order_date       DateTime @default(now())
   delivery_date    DateTime?
   status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
-  total_quantity   Int
+  total_quantity   Int?
   total_price      Float @default(0.0) 
-  selling_price    Float
-  wholesaler_id      String    @db.ObjectId
+  selling_price    Float?
+  wholesaler_id     String    @db.ObjectId
   manufacturer_id  String    @db.ObjectId
   manufacturer     Manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id])
   order_items      OrderItem[] // One-to-many relationship with OrderItem
@@ -113,11 +110,11 @@ model Order_Received {
 
 model OrderItem {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
-  order_id         String    @db.ObjectId
   quantity         Int
   medicine_id      String    @db.ObjectId
   selling_price    Float
   order            Order_Received @relation(fields: [order_id], references: [order_id])
+  order_id         String    @db.ObjectId
 }
 
 //whole seller schema
@@ -144,6 +141,8 @@ model Wholesaler_Address {
   city             String
   state            String
   postal_code      String
+  longitude       Float?
+  latitude        Float?
   country          String
   wholesaler_id    String    @db.ObjectId // Foreign key
   wholesaler       Wholesaler @relation(fields: [wholesaler_id], references: [wholesaler_id])
@@ -191,45 +190,18 @@ model Wholesaler_Sold {
 
 model Wholesaler_Bought {
   bought_id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  batch             Wholesaler_bought_batches[] // One-to-many relationship with bought_batches
+  batch_id            String// One-to-many relationship with bought_batches
   bought_date        DateTime @default(now())
   discount_rate      Float?
-  total_price      Float
+  cost_price      Float?
+   quantity     Int
+   status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
+  order_id          String
   bought         Wholesaler @relation(fields: [wholesaler_id], references: [wholesaler_id])
   wholesaler_id      String    @db.ObjectId
    medicine_id      String    @db.ObjectId
 }
 
-model Wholesaler_bought_batches{
-  id               String    @id @default(auto()) @map("_id") @db.ObjectId
-  batch_id         String   @db.ObjectId
-  quantity         Int
-  bought            Wholesaler_Bought @relation(fields: [bought_id], references: [bought_id])
-  bought_id         String    @db.ObjectId
-}
-
-
-// model Wholesaler_Order {
-//   order_id         String    @id @default(auto()) @map("_id") @db.ObjectId
-//   order_date       DateTime
-//   delivery_date    DateTime?
-//   status           String @default("pending")    // e.g., 'pending', 'shipped', 'delivered'
-//   total_quantity   Int
-//   total_price      Float
-//   manufacturer_id  String  
-//   wholesaler_id    String    @db.ObjectId
-//   wholesaler       Wholesaler @relation(fields: [wholesaler_id], references: [wholesaler_id])
-//   order_items      Wholesaler_OrderItem[] // One-to-many relationship with OrderItem
-// }
-
-// model Wholesaler_OrderItem {
-//   id               String    @id @default(auto()) @map("_id") @db.ObjectId
-//   order_id         String    @db.ObjectId
-//   quantity         Int
-//   medicine_name    String
-//   medicine_id      String    @db.ObjectId
-//   order            Wholesaler_Order @relation(fields: [order_id], references: [order_id])
-// }
 
 model Wholesaler_Order_received {
   order_id         String    @id @default(auto()) @map("_id") @db.ObjectId
