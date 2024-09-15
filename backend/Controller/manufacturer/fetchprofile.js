@@ -1,11 +1,9 @@
 import prisma from "../../prisma/index.js";
 
-
 // fetch manufacturer profile
 const getManufacturerById = async (req, res) => {
   try {
     const claims = req.user;
-
     const manufacturer = await prisma.manufacturer.findUnique({
       where: { manufacturer_id: claims.manufacturerId },
       include: {
@@ -45,29 +43,26 @@ const getManufacturerById = async (req, res) => {
 const updatemanufacturer = async (req, res) => {
   const { manufacturer_id } = req.user.manufacturerId;
   const content = req.body;
-     try {
-       const updatemanufacturer = await prisma.manufacturer.update({
-         where: { manufacturer_id },
-         data: content,
-         include: {
-           address: true,
-         },
-       });
-       if (updatemanufacturer) {
-         return res.status(200).json({
-           message: "Wholesaler updated successfully",
-           data: updatedWholesaler,
-         });
-       }
-     } catch (error) {
-       console.error("Error updating wholesaler:", error);
-       return res.status(500).json({
-         message: "An error occurred while updating wholesaler",
-       });
-     }
-     };
+  try {
+    const updatemanufacturer = await prisma.manufacturer.update({
+      where: { manufacturer_id },
+      data: content,
+      include: {
+        address: true,
+      },
+    });
+    if (updatemanufacturer) {
+      return res.status(200).json({
+        message: "Wholesaler updated successfully",
+        data: updatedWholesaler,
+      });
+    }
+  } catch (error) {
+    console.error("Error updating wholesaler:", error);
+    return res.status(500).json({
+      message: "An error occurred while updating wholesaler",
+    });
+  }
+};
 
-
-export { getManufacturerById,
-  updatemanufacturer
- };
+export { getManufacturerById, updatemanufacturer };
