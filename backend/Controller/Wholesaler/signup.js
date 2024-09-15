@@ -37,7 +37,7 @@ const signup = asyncHandler(async (req, res) => {
         }
       );
       res.cookie("jwt", token, {
-        httpOnly: true,
+        httpOnly: false,
         maxAge: 24 * 60 * 60 * 1000, // 1 day
       });
       res.status(201).json({
@@ -68,15 +68,16 @@ const login = asyncHandler(async (req, res) => {
   }
 
   // Generate a JWT token
+
   const token = jwt.sign(
-    { wholesalerId: wholesaler.id },
+    { wholesalerId: wholesaler.wholesaler_id },
     process.env.ACCESS_TOKEN_SECRET_USER,
     {
       expiresIn: "2h",
     }
   );
   res.cookie("jwt", token, {
-    httpOnly: true,
+    httpOnly: false,
     maxAge: 24 * 60 * 60 * 1000, // 1 day
   });
 
