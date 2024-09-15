@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model norification{
+model notification{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   title String
   body String
@@ -100,8 +100,7 @@ model Order_Received {
   delivery_date    DateTime?
   status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
   total_quantity   Int?
-  total_price      Float @default(0.0) 
-  selling_price    Float?
+  total_price      Float @default(0.0) // Total price of all items in the order
   wholesaler_id     String    @db.ObjectId
   manufacturer_id  String    @db.ObjectId
   manufacturer     Manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id])
@@ -112,6 +111,7 @@ model OrderItem {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
   quantity         Int
   medicine_id      String    @db.ObjectId
+  batch_id         String?    @db.ObjectId
   selling_price    Float
   order            Order_Received @relation(fields: [order_id], references: [order_id])
   order_id         String    @db.ObjectId
@@ -121,12 +121,12 @@ model OrderItem {
 
 model Wholesaler {
   wholesaler_id    String    @id @default(auto()) @map("_id") @db.ObjectId
-  wholesaler_name     String    @unique
+  wholesaler_name  String    @unique
   email            String    @unique
   phone            String
   password         String
   website          String?
-  logo_url        String @default("https://res.cloudinary.com/dgljwzmsc/image/upload/v1726345502/Logo2_q8lity.png")
+  logo_url         String @default("https://res.cloudinary.com/dgljwzmsc/image/upload/v1726345502/Logo2_q8lity.png")
   GST_No           String    @unique
   address          Wholesaler_Address[]  // One-to-many relationship with Address
   medicines        Wholesaler_Medicines[]  // One-to-many relationship with MedicinesGallery
@@ -224,6 +224,14 @@ model Wholesaler_Order_received_item {
   medicine_name    String
   medicine_id      String    @db.ObjectId
   order            Wholesaler_Order_received @relation(fields: [order_id], references: [order_id])
+}
+
+model Wholesaler_return_manufacturer {
+  return_id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  return_date       DateTime  @default(now())
+  return_reason      String
+  return_description String
+  order_id           String
 }
 
 //retailer schema

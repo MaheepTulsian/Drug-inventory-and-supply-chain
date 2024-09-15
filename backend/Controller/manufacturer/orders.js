@@ -136,8 +136,14 @@ const checkAvailability = async (req, res) => {
     }
     else {
       order.status='Approved';
-      //Inventory management for manufacturer
-      
+      //updating batch_id in order_items
+      const items = order.order_items;
+      for(let i=0; i<items.length; i++){
+        const item = items[i];
+        item.batch_id = medicineInfo[i].batch_id;
+      }
+        
+        //Inventory management for manufacturer
         const manufacturer_id = order.manufacturer_id;
         for(let j=0; j<medicineInfo.length; j++){
           const medi = medicineInfo[j];
@@ -146,6 +152,7 @@ const checkAvailability = async (req, res) => {
                 batch_id: medi.batch_id
             }
           });
+
           const new_stock = batch.current_stock - medi.qty;
           await prisma.batch.update({
             where: { batch_id: medi.batch_id },
