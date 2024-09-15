@@ -76,6 +76,7 @@
 import React, { useState } from 'react';
 import Layout from './layout';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 import Auth from './pages/auth/Auth';
 import NotFound from './pages/NotFound';
 import ManufacturerDashboard from './pages/Dashboards/ManufacturerDashboard/ManufacturerDashboard';
@@ -96,7 +97,11 @@ const App = () => {
               <Route path="*" element={<NotFound />} />
               <Route path="/auth" element={<Auth />} />
 
-              <Route path="/manufacturer-dashboard" element={<ManufacturerDashboard />}>
+              <Route path="/manufacturer-dashboard" element={
+                  <ProtectedRoute>
+                    <ManufacturerDashboard />
+                  </ProtectedRoute>
+                }>
                 <Route path="/manufacturer-dashboard/" element={<Dashboard />} />
                 <Route path="/manufacturer-dashboard/profile" element={<Profile />} />
                 <Route path="/manufacturer-dashboard/inventory" element={<Inventory />} />
