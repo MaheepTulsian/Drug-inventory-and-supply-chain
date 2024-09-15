@@ -18,6 +18,8 @@ import {
   checkAvailability,
 } from "../Controller/manufacturer/orders.js";
 
+import { discontinueManufacturerBatch } from "../Controller/manufacturer/discontinue.js";
+
 import { verifyJWT } from "../Middleware/authmanufacture.js";
 import multer from "multer";
 const upload = multer();
@@ -41,4 +43,8 @@ router.route("/orders").get(verifyJWT, getOrdersReceivedByManufacturer);
 router.route("/order/:order_id").get(verifyJWT, getReceivedOrderById);
 //check for availability of medicines in stock before approving order
 router.route("/checkavailability/:order_id").post(verifyJWT, checkAvailability);
+
+// discontinue a batch
+router.route("/discontinue/:batch_id").put(verifyJWT, discontinueManufacturerBatch);
+
 export default router;

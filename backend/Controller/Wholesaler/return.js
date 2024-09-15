@@ -2,7 +2,7 @@ import prisma from "../../prisma/index.js";
 
 
 // Create a return for a received order
-const createReturn = async (req, res) => {
+const returnOrder = async (req, res) => {
      const wholesaler_id = req.user.wholesalerId;
      const order_id = req.params.order_id;
      const { return_reason, return_description } = req.body;
@@ -86,8 +86,6 @@ const createReturn = async (req, res) => {
                });
           }
 
-
-
           return res.status(201).json({
                message: 'Returned recieved items successfully',
                data: returnOrder,
@@ -100,3 +98,5 @@ const createReturn = async (req, res) => {
           });
      }
 }
+
+export default returnOrder;
