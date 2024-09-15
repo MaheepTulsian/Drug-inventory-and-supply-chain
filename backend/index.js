@@ -4,15 +4,18 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import manufacturerRoute from "./Routes/manufacture.js";
 import wholesalerRoute from "./Routes/wholeseller.js";
+import retailerRoute from "./Routes/retailer.js";
 const app = express();
 dotenv.config();
 const Port = process.env.PORT || 8000;
 
 //cors middleware
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 //regular express middleware
 app.use(express.json());
@@ -24,7 +27,7 @@ app.use(cookieParser());
 //router from manufacutur
 app.use("/api/manufacturer", manufacturerRoute);
 app.use("/api/wholeseller", wholesalerRoute);
-
+app.use("/api/retailer", retailerRoute);
 app.get("/", (req, res) => {
   res.send("Hello World");
 });

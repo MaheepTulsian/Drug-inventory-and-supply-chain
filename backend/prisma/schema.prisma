@@ -256,6 +256,8 @@ model Retailer_Address {
   city             String
   state            String
   postal_code      String
+  longitude       Float?
+  latitude        Float?
   country          String
   retailer_id      String    @db.ObjectId // Foreign key
   retailer         Retailer @relation(fields: [retailer_id], references: [retailer_id])
