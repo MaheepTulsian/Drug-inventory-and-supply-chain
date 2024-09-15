@@ -1,8 +1,11 @@
 import prisma from "../../prisma/index.js";
 
 // add a medicine to the manufacturer
-const addMedicine = async (req, res, next) => {
-  const { medicine_name, category_name, manufacturer_id } = req.body;
+
+const addMedicine = async (req, res) => {
+  const { medicine_name, category_name } = req.body;
+  // const { manufacturer_id } = req.params;
+  const manufacturer_id = req.user.manufacturerId;
   try {
     // Check if the manufacturer exists
     const manufacturer = await prisma.manufacturer.findUnique({
@@ -17,9 +20,7 @@ const addMedicine = async (req, res, next) => {
         medicine_name,
         category_name,
         manufacturer: {
-          connect: {
-            manufacturer_id,
-          },
+          connect: { manufacturer_id },
         },
       },
     });
@@ -36,7 +37,6 @@ const addMedicine = async (req, res, next) => {
     });
   }
 };
-
 // create a batch to a medicine
 const addBatchToMedicine = async (req, res) => {
   const { medicine_id } = req.params;

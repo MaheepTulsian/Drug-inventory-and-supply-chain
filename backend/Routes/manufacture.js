@@ -1,7 +1,10 @@
 import express from "express";
 const router = express.Router();
 import { signup, login, logout } from "../Controller/manufacturer/signup.js";
-import { getManufacturerById , updatemanufacturer} from "../Controller/manufacturer/fetchprofile.js";
+import {
+  getManufacturerById,
+  updatemanufacturer,
+} from "../Controller/manufacturer/fetchprofile.js";
 import {
   addMedicine,
   addBatchToMedicine,
@@ -12,7 +15,7 @@ import {
 import {
   getOrdersReceivedByManufacturer,
   getReceivedOrderById,
-  checkAvailability
+  checkAvailability,
 } from "../Controller/manufacturer/orders.js";
 
 import { verifyJWT } from "../Middleware/authmanufacture.js";
@@ -22,18 +25,15 @@ router.route("/signup").post(signup);
 router.route("/login").post(upload.none(), login);
 router.route("/logout").get(logout);
 
-
 // fetch manufacturer profile
 router.route("/manufacturer_profile").get(verifyJWT, getManufacturerById);
 //update manufacturer profile
 router.route("/update").put(verifyJWT, updatemanufacturer);
 
-
-router.route("/addmedicine").post(addMedicine);
+router.route("/addmedicine").post(verifyJWT, upload.none(), addMedicine);
 router.route("/addBatch/:medicine_id").post(upload.none(), addBatchToMedicine);
 router.route("/addstock/:medicine_id").post(upload.none(), addStockToMedicine);
 router.route("/medicines/manufacturer_id").get(verifyJWT, getAllMedicines);
-
 
 //fetching all orders recieved by manufacturer
 router.route("/orders").get(verifyJWT, getOrdersReceivedByManufacturer);
