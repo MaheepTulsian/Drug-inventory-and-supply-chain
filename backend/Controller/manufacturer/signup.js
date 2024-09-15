@@ -44,7 +44,7 @@ const signup = asyncHandler(
           }
         );
         res.cookie("jwt", token, {
-          httpOnly: true,
+          httpOnly: false,
           maxAge: 24 * 60 * 60 * 1000, // 1 day
         });
         res.status(201).json({
@@ -87,7 +87,7 @@ const login = asyncHandler(async (req, res) => {
 
   // Set the token in an HTTP-only cookie
   res.cookie("jwt", token, {
-    httpOnly: true,
+    httpOnly: false,
     maxAge: 24 * 60 * 60 * 1000, // 1 day
   });
 
