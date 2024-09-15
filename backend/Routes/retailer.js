@@ -1,0 +1,12 @@
+import express from "express";
+import { login, signup, logout } from "../Controller/retailer/signup.js";
+const router = express.Router();
+import { verifyJWT } from "../Middleware/authmanufacture.js";
+import { map } from "../Controller/Wholesaler/map.js";
+import multer from "multer";
+const upload = multer();
+router.route("/signup").post(upload.none(), signup);
+router.route("/login").post(upload.none(), login);
+router.route("/logout").get(upload.none(), logout);
+router.route("/map").get(verifyJWT, map);
+export default router;
