@@ -1,10 +1,10 @@
 import prisma from "../../prisma/index.js";
 
-const discontinuewholesalerBatch = async (req, res) => {
+const discontinueRetailerBatch = async (req, res) => {
      const batch_id = req.params.batch_id;
-     const { wholesaler_id } = req.user.wholesalerId ;
+     const { wholesaler_id } = req.user.retailerId ;
      try{
-          const batch = await prisma.wholesaler_Batch.findUnique({
+          const batch = await prisma.retailer_Batch.findUnique({
                where: { batch_id },
           });
           if (!batch) {
@@ -13,7 +13,7 @@ const discontinuewholesalerBatch = async (req, res) => {
           if (batch.batch_status === 'Inactive') {
                return res.status(400).json({ message: 'Batch already discontinued' });
           }
-          await prisma.wholesaler_Batch.update({
+          await prisma.retailer_Batch.update({
                where: { batch_id },
                data: {
                     batch_status: 'Inactive',
@@ -31,4 +31,4 @@ const discontinuewholesalerBatch = async (req, res) => {
      }
 }
 
-export { discontinuewholesalerBatch};
+export { discontinueRetailerBatch };
