@@ -291,65 +291,65 @@ export const mockTransactions = [
 
 export const mockBarData = [
   {
-      "medicine_name": "Furosemide",
-      "total_sales": 1143.0
+    medicine_name: "Furosemide",
+    total_sales: 1143.0,
   },
   {
-      "medicine_name": "Imatinib",
-      "total_sales": 1121.0
+    medicine_name: "Imatinib",
+    total_sales: 1121.0,
   },
   {
-      "medicine_name": "Ipratropium",
-      "total_sales": 1072.0
+    medicine_name: "Ipratropium",
+    total_sales: 1072.0,
   },
   {
-      "medicine_name": "Dapoxetine",
-      "total_sales": 1050.0
+    medicine_name: "Dapoxetine",
+    total_sales: 1050.0,
   },
   {
-      "medicine_name": "Sofosbuvir",
-      "total_sales": 1043.0
+    medicine_name: "Sofosbuvir",
+    total_sales: 1043.0,
   },
   {
-      "medicine_name": "Raltegravir",
-      "total_sales": 1008.0
+    medicine_name: "Raltegravir",
+    total_sales: 1008.0,
   },
   {
-      "medicine_name": "Anastrozole",
-      "total_sales": 1001.0
+    medicine_name: "Anastrozole",
+    total_sales: 1001.0,
   },
   {
-      "medicine_name": "Aripiprazole",
-      "total_sales": 956.0
+    medicine_name: "Aripiprazole",
+    total_sales: 956.0,
   },
   {
-      "medicine_name": "Trastuzumab",
-      "total_sales": 953.0
+    medicine_name: "Trastuzumab",
+    total_sales: 953.0,
   },
   {
-      "medicine_name": "Nifedipine",
-      "total_sales": 938.0
+    medicine_name: "Nifedipine",
+    total_sales: 938.0,
   },
   {
-      "medicine_name": "Oseltamivir",
-      "total_sales": 922.0
+    medicine_name: "Oseltamivir",
+    total_sales: 922.0,
   },
   {
-      "medicine_name": "Zidovudine",
-      "total_sales": 911.0
+    medicine_name: "Zidovudine",
+    total_sales: 911.0,
   },
   {
-      "medicine_name": "Acetylcholine",
-      "total_sales": 907.0
+    medicine_name: "Acetylcholine",
+    total_sales: 907.0,
   },
   {
-      "medicine_name": "Hydroxychloroquine",
-      "total_sales": 902.0
+    medicine_name: "Hydroxychloroquine",
+    total_sales: 902.0,
   },
   {
-      "medicine_name": "Remdesivir",
-      "total_sales": 897.0
-  }
+    medicine_name: "Remdesivir",
+    total_sales: 897.0,
+  },
 ];
 
 export const mockPieData = [
@@ -1237,8 +1237,7 @@ export const mockGeographyData = [
   },
 ];
 
-
-export const mockLineOneWeekData =  [
+export const mockLineOneWeekData = [
   {
     id: "revenue",
     color: "hsl(205, 70%, 50%)",
@@ -1411,9 +1410,365 @@ export const mockReturnsData = [
     city: "Los Angeles",
     gstn: "22AAAAA0000A1Z6",
     returnReason: "Expired Medicine",
-    medicines: [
-      { name: "Aspirin", quantity: 10 },
-    ],
+    medicines: [{ name: "Aspirin", quantity: 10 }],
   },
   // Add more return records as needed
+];
+
+export const mockMapManufacturerData = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      properties: {
+        id: "1f6c8d9f1f7c4a9dbf12234a",
+        profile_url: "http://example1.in",
+        company_name: "Bharat Pharmaceuticals",
+        email: "contact@bharatpharma.in",
+        phone: "9876543210",
+        website: "http://bharatpharma.in",
+        GST_No: "27AABCU9603R1ZV",
+        street: "4/5, Ghatkopar West",
+        city: "Mumbai",
+        state: "Maharashtra",
+        postal_code: "400086",
+        country: "India",
+        medicines: [
+          {
+            medicine_id: "66e6b5e7ede0e2126d5a6899",
+            medicine_name: "Paracetamol",
+          },
+          {
+            medicine_id: "66e6b6f645aa43ac9532b1e0",
+            medicine_name: "Ibuprofen",
+          },
+        ],
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [72.909, 19.0822],
+      },
+    },
+    {
+      type: "Feature",
+      properties: {
+        id: "5c8d1a2b7f6c45b5b12378a1",
+        profile_url: "http://example2.in",
+        company_name: "Zydus Lifesciences",
+        email: "info@zydus.com",
+        phone: "9833217890",
+        website: "http://zydus.com",
+        GST_No: "24AAGCZ4896L1ZA",
+        street: "Ahmedabad-Gandhinagar Highway",
+        city: "Ahmedabad",
+        state: "Gujarat",
+        postal_code: "382421",
+        country: "India",
+        medicines: [
+          {
+            medicine_id: "66e7b8e567aa43ac6543b9f1",
+            medicine_name: "Amoxicillin",
+          },
+          {
+            medicine_id: "66e7b9a567aa43ac9545b1g2",
+            medicine_name: "Ciprofloxacin",
+          },
+        ],
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [72.5797, 23.0225],
+      },
+    },
+    {
+      type: "Feature",
+      properties: {
+        id: "7f8c9d6f4b7a12c6d5b3f9e1",
+        profile_url: "http://example3.in",
+        company_name: "Cipla Ltd.",
+        email: "support@cipla.com",
+        phone: "9812345678",
+        website: "http://cipla.com",
+        GST_No: "29AABCC8888E1Z1",
+        street: "Bellary Road",
+        city: "Bengaluru",
+        state: "Karnataka",
+        postal_code: "560024",
+        country: "India",
+        medicines: [
+          {
+            medicine_id: "66e6a1b345aa45a1234c9e1f",
+            medicine_name: "Salbutamol",
+          },
+          {
+            medicine_id: "66e7c1f6bbaa45a9876c4d2b",
+            medicine_name: "Montelukast",
+          },
+        ],
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [77.5946, 12.9716],
+      },
+    },
+    {
+      type: "Feature",
+      properties: {
+        id: "2e3b4f6f3c7d9a2b7b6f1a9e",
+        profile_url: "http://example4.in",
+        company_name: "Ranbaxy Laboratories",
+        email: "sales@ranbaxy.com",
+        phone: "9898765432",
+        website: "http://ranbaxy.com",
+        GST_No: "07AACCR9483K1Z1",
+        street: "Okhla Phase III",
+        city: "New Delhi",
+        state: "Delhi",
+        postal_code: "110020",
+        country: "India",
+        medicines: [
+          {
+            medicine_id: "66e6b4f6bbaa43ab9874b6a1",
+            medicine_name: "Azithromycin",
+          },
+          {
+            medicine_id: "66e6b9e767aa43bc9532b3e0",
+            medicine_name: "Levofloxacin",
+          },
+        ],
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [77.209, 28.6139],
+      },
+    },
+    {
+      type: "Feature",
+      properties: {
+        id: "5f8a9b6c4b7a12c6d7b4f8e1",
+        profile_url: "http://example5.in",
+        company_name: "Sun Pharmaceuticals",
+        email: "contact@sunpharma.com",
+        phone: "9845612345",
+        website: "http://sunpharma.com",
+        GST_No: "33AACCS2933L1Z6",
+        street: "Old Mahabalipuram Road",
+        city: "Chennai",
+        state: "Tamil Nadu",
+        postal_code: "600119",
+        country: "India",
+        medicines: [
+          {
+            medicine_id: "66e6b5e7ede0e2126d5b7898",
+            medicine_name: "Metformin",
+          },
+          {
+            medicine_id: "66e7c8b345aa43ac9534b1e9",
+            medicine_name: "Amlodipine",
+          },
+        ],
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [80.2496, 13.0827],
+      },
+    },
+    {
+      type: "Feature",
+      properties: {
+        id: "4b5a6c7d8e9f123b5c4e7a9f",
+        profile_url: "http://example6.in",
+        company_name: "Lupin Limited",
+        email: "info@lupin.com",
+        phone: "9871234560",
+        website: "http://lupin.com",
+        GST_No: "23AAACL5234P1ZA",
+        street: "Industrial Area, Pithampur",
+        city: "Indore",
+        state: "Madhya Pradesh",
+        postal_code: "452001",
+        country: "India",
+        medicines: [
+          {
+            medicine_id: "66e6a2f567aa43bc9532c4a1",
+            medicine_name: "Clopidogrel",
+          },
+          {
+            medicine_id: "66e7d3b4aa543a9876f1b2c3",
+            medicine_name: "Rosuvastatin",
+          },
+        ],
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [75.8577, 22.7196],
+      },
+    },
+    {
+      type: "Feature",
+      properties: {
+        id: "6b8a9d7c4f5a12e6d7f1b6e3",
+        profile_url: "http://example7.in",
+        company_name: "Torrent Pharmaceuticals",
+        email: "support@torrentpharma.com",
+        phone: "9845098765",
+        website: "http://torrentpharma.com",
+        GST_No: "24AABCT4456R1ZV",
+        street: "Sarkhej-Gandhinagar Highway",
+        city: "Ahmedabad",
+        state: "Gujarat",
+        postal_code: "380051",
+        country: "India",
+        medicines: [
+          {
+            medicine_id: "66e7b4e6bbaa45bc9531d2f3",
+            medicine_name: "Losartan",
+          },
+          {
+            medicine_id: "66e7c1e567aa43bc9545e9g1",
+            medicine_name: "Telmisartan",
+          },
+        ],
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [72.5714, 23.0339],
+      },
+    },
+    {
+      type: "Feature",
+      properties: {
+        id: "5a7b8c6e7f9d12c5e6a4f7d8",
+        profile_url: "http://example8.in",
+        company_name: "Dr. Reddy's Laboratories",
+        email: "sales@drreddys.com",
+        phone: "9810987654",
+        website: "http://drreddys.com",
+        GST_No: "36AABCD4567G1ZV",
+        street: "Banjara Hills",
+        city: "Hyderabad",
+        state: "Telangana",
+        postal_code: "500034",
+        country: "India",
+        medicines: [
+          {
+            medicine_id: "66e6f4e567aa43bc9543d6g1",
+            medicine_name: "Omeprazole",
+          },
+          {
+            medicine_id: "66e6b7f345aa45bc9532f7d9",
+            medicine_name: "Pantoprazole",
+          },
+        ],
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [78.4867, 17.385],
+      },
+    },
+    {
+      type: "Feature",
+      properties: {
+        id: "7d8a9b6e4f5a12c6d5e4f8e2",
+        profile_url: "http://example9.in",
+        company_name: "Aurobindo Pharma",
+        email: "contact@aurobindo.com",
+        phone: "9876012345",
+        website: "http://aurobindo.com",
+        GST_No: "36AAACZ1234E1ZV",
+        street: "E Block, Sanath Nagar",
+        city: "Hyderabad",
+        state: "Telangana",
+        postal_code: "500018",
+        country: "India",
+        medicines: [
+          {
+            medicine_id: "66e6b3e6bbaa43bc9521c5g2",
+            medicine_name: "Hydroxychloroquine",
+          },
+          {
+            medicine_id: "66e6f8e567aa43bc9537e1g3",
+            medicine_name: "Remdesivir",
+          },
+        ],
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [78.4867, 17.4497],
+      },
+    },
+    {
+      type: "Feature",
+      properties: {
+        id: "3e5f8a9b6d7a12c4b6f3d9a1",
+        profile_url: "http://example10.in",
+        company_name: "Biocon Limited",
+        email: "info@biocon.com",
+        phone: "9812234567",
+        website: "http://biocon.com",
+        GST_No: "29AACCB1234L1ZA",
+        street: "Electronics City Phase 1",
+        city: "Bengaluru",
+        state: "Karnataka",
+        postal_code: "560100",
+        country: "India",
+        medicines: [
+          {
+            medicine_id: "66e7f3e6bbaa43bc9522c5g4",
+            medicine_name: "Insulin Glargine",
+          },
+          {
+            medicine_id: "66e7f8e567aa43bc9539e4g5",
+            medicine_name: "Trastuzumab",
+          },
+        ],
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [77.6784, 12.8411],
+      },
+    },
+  ],
+};
+
+export const mockOrderHistoryData = [
+  {
+    order_id: "ORD123456",
+    date_of_order: "2024-09-13",
+    date_of_approval: "2024-09-15",
+    medicines: [
+      { medicine_id: "66e6b5e7ede0e2126d5a6899", medicine_name: "Paracetamol", quantity: 20 },
+      { medicine_id: "66e6b6f645aa43ac9532b1e0", medicine_name: "Ibuprofen", quantity: 15 },
+    ],
+    status: "Approved", // Status can be Pending, Approved, Return Raised, Return Approved
+  },
+  {
+    order_id: "ORD123457",
+    date_of_order: "2024-08-22",
+    date_of_approval: "2024-08-24",
+    medicines: [
+      { medicine_id: "66e6b5e7ede0e2126d5a6899", medicine_name: "Paracetamol", quantity: 10 },
+      { medicine_id: "66e6b5e7ede0e2126d5a6721", medicine_name: "Amoxicillin", quantity: 30 },
+    ],
+    status: "Pending",
+  },
+  {
+    order_id: "ORD123458",
+    date_of_order: "2024-08-23",
+    date_of_approval: "2024-08-25",
+    medicines: [
+      { medicine_id: "66e6b6f645aa43ac9532b1e0", medicine_name: "Ibuprofen", quantity: 25 },
+      { medicine_id: "66e6b7f123aa45ac9532b2e2", medicine_name: "Aspirin", quantity: 40 },
+    ],
+    status: "Return Raised",
+  },
+  {
+    order_id: "ORD123459",
+    date_of_order: "2024-08-25",
+    date_of_approval: "2024-08-27",
+    medicines: [
+      { medicine_id: "66e6b8f645bc43ac9532b1f3", medicine_name: "Cetirizine", quantity: 50 },
+    ],
+    status: "Return Approved",
+  }
 ];

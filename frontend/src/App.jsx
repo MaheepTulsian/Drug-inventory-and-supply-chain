@@ -1,78 +1,3 @@
-// import React, { useState } from 'react';
-// import Layout from './layout';
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import NotFound from './pages/NotFound';
-// import Auth from './pages/auth/Auth';
-// import ManufacturerDashboard from './pages/Dashboards/ManufacturerDashboard/ManufacturerDashboard';
-// import { Bar, Line, Pie, Topbar, Sidebar, Dashboard, Profile, Orders, OrderDetails, Returns, ReturnDetails, Inventory, InventoryDetails, Sales, Form } from './pages/Dashboards/ManufacturerDashboard/index.js';
-// import { CssBaseline, ThemeProvider } from "@mui/material";
-// import { ColorModeContext, useMode } from "./theme";
-// import { Outlet } from 'react-router-dom';
-
-// const DashboardLayout = ({ isSidebar, setIsSidebar }) => (
-//   <>
-//     <Sidebar isSidebar={isSidebar} />
-//     <main className="content">
-//       <Topbar setIsSidebar={setIsSidebar} />
-//       <Outlet /> {/* Renders the child routes */}
-//     </main>
-//   </>
-// );
-
-// const App = () => {
-//   const [theme, colorMode] = useMode();
-//   const [isSidebar, setIsSidebar] = useState(true);
-
-//   return (
-//     <ColorModeContext.Provider value={colorMode}>
-//       <ThemeProvider theme={theme}>
-//         <CssBaseline />
-
-//         <Router>
-//           {/* Non-dashboard routes */}
-//           <Routes>
-//             <Route path="/" element={<Layout />} />
-//             <Route path="*" element={<NotFound />} />
-//             <Route path="/auth" element={<Auth />} />
-//           </Routes>
-
-//           {/* Dashboard routes inside the app div */}
-//           <div className='app'>
-//             <Routes>
-//               {/* Main dashboard layout */}
-//               <Route path="/manufacturer-dashboard" element={
-//                 <DashboardLayout isSidebar={isSidebar} setIsSidebar={setIsSidebar} />
-//               }>
-//                 {/* This route renders the Dashboard component when accessing /manufacturer-dashboard */}
-//                 <Route index element={<Dashboard />} />
-
-//                 {/* Sub-routes */}
-//                 <Route path="profile" element={<Profile />} />
-//                 <Route path="inventory" element={<Inventory />} />
-//                 <Route path="inventory/:id" element={<InventoryDetails />} />
-//                 <Route path="orders" element={<Orders />} />
-//                 <Route path="orders/:id" element={<OrderDetails />} />
-//                 <Route path="returns" element={<Returns />} />
-//                 <Route path="returns/:id" element={<ReturnDetails />} />
-//                 <Route path="sales" element={<Sales />} />
-//                 <Route path="list-medicine" element={<Form />} />
-//                 <Route path="bar" element={<Bar />} />
-//                 <Route path="pie" element={<Pie />} />
-//                 <Route path="line" element={<Line />} />
-//               </Route>
-//             </Routes>
-//           </div>
-//         </Router>
-        
-//       </ThemeProvider>
-//     </ColorModeContext.Provider>
-//   );
-// };
-
-// export default App;
-
-
-
 import React, { useState } from 'react';
 import Layout from './layout';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -80,7 +5,9 @@ import ProtectedRoute from './ProtectedRoute';
 import Auth from './pages/auth/Auth';
 import NotFound from './pages/NotFound';
 import ManufacturerDashboard from './pages/Dashboards/ManufacturerDashboard/ManufacturerDashboard';
+import DistributorDashboard from './pages/Dashboards/WholesellerDashboard/DistributorDashboard';
 import { Bar, Line, Pie, Dashboard, Profile, Orders, OrderDetails, Returns, ReturnDetails, Inventory, InventoryDetails, Sales, Form } from './pages/Dashboards/ManufacturerDashboard/index.js';
+import { MapManufacturer, MapManufacturerDetails, OrderReturnStatus, OrderReturnStatusDetails } from './pages/Dashboards/WholesellerDashboard/index.js';
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 
@@ -116,6 +43,30 @@ const App = () => {
                 <Route path="/manufacturer-dashboard/pie" element={<Pie />} />
                 <Route path="/manufacturer-dashboard/line" element={<Line />} />
               </Route>
+
+              <Route path="/distributor-dashboard" element={
+                  <ProtectedRoute>
+                    <DistributorDashboard />
+                  </ProtectedRoute>
+                }>
+                <Route path="/distributor-dashboard/" element={<Dashboard />} />
+                <Route path="/distributor-dashboard/profile" element={<Profile />} />
+                <Route path="/distributor-dashboard/createorder" element={<MapManufacturer />} />
+                <Route path="/distributor-dashboard/createorder/:id" element={<MapManufacturerDetails />} />
+                <Route path="/distributor-dashboard/inventory" element={<Inventory />} />
+                <Route path="/distributor-dashboard/inventory/:id" element={<InventoryDetails />} />
+                <Route path="/distributor-dashboard/order-return-status" element={<OrderReturnStatus />} />
+                <Route path="/distributor-dashboard/order-return-status/:orderId" element={<OrderReturnStatusDetails />} />
+                <Route path="/distributor-dashboard/orders" element={<Orders />} />
+                <Route path="/distributor-dashboard/orders/:id" element={<OrderDetails />} />
+                <Route path="/distributor-dashboard/returns" element={<Returns />} />
+                <Route path="/distributor-dashboard/returns/:id" element={<ReturnDetails />} />
+                <Route path="/distributor-dashboard/sales" element={<Sales />} />
+                <Route path="/distributor-dashboard/bar" element={<Bar />} />
+                <Route path="/distributor-dashboard/pie" element={<Pie />} />
+                <Route path="/distributor-dashboard/line" element={<Line />} />
+              </Route>
+
             </Routes>
           </Router>
       </ThemeProvider>
