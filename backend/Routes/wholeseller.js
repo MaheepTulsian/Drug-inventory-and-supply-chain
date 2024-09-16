@@ -9,7 +9,11 @@ import {
   updateWholesaler,
 } from "../Controller/Wholesaler/fetchprofile.js";
 
-import { createOrdertoManufacturer, getallOrdersPlacedByWholesaler, getOrderPlacedByWholesaler } from "../Controller/Wholesaler/order.js";
+import {
+  createOrdertoManufacturer,
+  getallOrdersPlacedByWholesaler,
+  getOrderPlacedByWholesaler,
+} from "../Controller/Wholesaler/order.js";
 import { returnOrder } from "../Controller/Wholesaler/return.js";
 
 import { discontinueManufacturerBatch } from "../Controller/manufacturer/discontinue.js";
@@ -24,7 +28,7 @@ router.route("/wholesaler_profile").get(verifyJWT, getWholesalerById);
 router.route("/update").put(verifyJWT, updateWholesaler);
 
 // create order to manufacturer
-router.route("/order/:wholesaler_id").post( createOrdertoManufacturer);
+router.route("/order/:wholesaler_id").post(createOrdertoManufacturer);
 // fetch all orders placed by wholesaler
 router.route("/orders").get(verifyJWT, getallOrdersPlacedByWholesaler);
 // fetch order placed by wholesaler
@@ -34,7 +38,8 @@ router.route("/order/:order_id").get(verifyJWT, getOrderPlacedByWholesaler);
 router.route("/return/:order_id").post(verifyJWT, returnOrder);
 
 // discontinue a batch
-router.route("/discontinue/:batch_id").put(verifyJWT, discontinueManufacturerBatch);
-
+router
+  .route("/discontinue/:batch_id")
+  .put(verifyJWT, discontinueManufacturerBatch);
 
 export default router;
