@@ -22,7 +22,12 @@ import { discontinueManufacturerBatch } from "../Controller/manufacturer/discont
 
 import { verifyJWT } from "../Middleware/authmanufacture.js";
 import multer from "multer";
+import {
+  fetchPastSevenSalesHistory,
+  fetchMonthlySalesHistory,
+} from "../Controller/manufacturer/revenue.js";
 const upload = multer();
+
 router.route("/signup").post(signup);
 router.route("/login").post(upload.none(), login);
 router.route("/logout").get(logout);
@@ -45,6 +50,11 @@ router.route("/order/:order_id").get(verifyJWT, getReceivedOrderById);
 router.route("/checkavailability/:order_id").post(verifyJWT, checkAvailability);
 
 // discontinue a batch
-router.route("/discontinue/:batch_id").put(verifyJWT, discontinueManufacturerBatch);
+router
+  .route("/discontinue/:batch_id")
+  .put(verifyJWT, discontinueManufacturerBatch);
+
+router.route("/fetch7days").get(verifyJWT, fetchPastSevenSalesHistory);
+router.route("/fetch30days").get(verifyJWT, fetchMonthlySalesHistory);
 
 export default router;
