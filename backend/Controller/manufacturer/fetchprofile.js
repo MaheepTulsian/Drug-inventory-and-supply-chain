@@ -65,4 +65,28 @@ const updatemanufacturer = async (req, res) => {
   }
 };
 
-export { getManufacturerById, updatemanufacturer };
+const getMedicine = async (req, res) => {
+  const medicine_id = req.params.medicine_id;
+
+  try {
+    const medicine = await prisma.medicinesGallery.findUnique({
+      where: { medicine_id },
+      include: {
+        batches: true,
+      },
+    });
+    if (medicine) {
+      return res.status(200).json({
+        message: "Manufacturer batch details",
+        data: medicine,
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching medicine:", error);
+    return res.status(500).json({
+      message: "An error occurred while fetching batch details",
+    });
+  }
+};
+
+export { getManufacturerById, updatemanufacturer, getMedicine };

@@ -4,6 +4,7 @@ import { signup, login, logout } from "../Controller/manufacturer/signup.js";
 import {
   getManufacturerById,
   updatemanufacturer,
+  getMedicine,
 } from "../Controller/manufacturer/fetchprofile.js";
 import {
   addMedicine,
@@ -56,5 +57,5 @@ router
 
 router.route("/fetch7days").get(verifyJWT, fetchPastSevenSalesHistory);
 router.route("/fetch30days").get(verifyJWT, fetchMonthlySalesHistory);
-
+router.route("/getmedicine/:medicine_id").get(verifyJWT, getMedicine);
 export default router;
