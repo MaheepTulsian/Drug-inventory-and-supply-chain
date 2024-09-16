@@ -3,7 +3,7 @@ import prisma from "../../prisma/index.js";
 // add a medicine to the manufacturer
 
 const addMedicine = async (req, res) => {
-  const { medicine_name, category_name } = req.body;
+  const { medicine_name, category_name, batches } = req.body;
   // const { manufacturer_id } = req.params;
   const manufacturer_id = req.user.manufacturerId;
   try {
@@ -19,6 +19,22 @@ const addMedicine = async (req, res) => {
       data: {
         medicine_name,
         category_name,
+        batches: {
+          create: batches.map((batch) => ({
+            batch_id: batch.batch_id,
+            manufacture_date: new Date(batch.manufacture_date),
+            expiry_date: new Date(batch.expiry_date),
+            quantity: batch.quantity,
+            current_stock: batch.current_stock,
+            reorder_threshold: batch.reorder_threshold,
+            strip_quantity: batch.strip_quantity,
+            tablets_per_strip: batch.tablets_per_strip,
+            mrp: batch.mrp,
+            selling_price: batch.selling_price,
+            cost_price: batch.cost_price,
+            batch_status: batch.batch_status,
+          })),
+        },
         manufacturer: {
           connect: { manufacturer_id },
         },
