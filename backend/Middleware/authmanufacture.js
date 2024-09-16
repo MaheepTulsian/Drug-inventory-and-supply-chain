@@ -3,7 +3,7 @@ import asyncHandler from "express-async-handler";
 import { ApiError } from "../utils/ApiError.js";
 import prisma from "../prisma/index.js";
 
-export const verifyJWT = asyncHandler(async (req, _, next) => {
+export const verifyJWT = asyncHandler(async (req, res, next) => {
   try {
     const cookie = req.cookies["jwt"];
 
@@ -12,8 +12,8 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     }
 
     const claims = jwt.verify(cookie, process.env.ACCESS_TOKEN_SECRET_USER);
-
-    if (!claims || !claims.manufacturerId) {
+    // console.log(claims.wholesalerId);
+    if (!claims) {
       return res
         .status(401)
         .json({ message: "Unauthenticated: Invalid JWT token" });

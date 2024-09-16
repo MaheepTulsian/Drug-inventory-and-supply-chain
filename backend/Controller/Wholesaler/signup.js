@@ -2,7 +2,7 @@ import prisma from "../../prisma/index.js";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import axios from "axios";
 const signup = asyncHandler(async (req, res) => {
   const { wholesaler_name, email, phone, password, website, GST_No, address } =
     req.body;
@@ -10,6 +10,25 @@ const signup = asyncHandler(async (req, res) => {
   try {
     // Hash the password before saving it to the database
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    if (!address.city || !address.country) {
+      return res
+        .status(400)
+        .json({ message: "City and Country are required in the address." });
+    }
+
+    const addressString = `${address.city}, ${address.country}`;
+
+    const apiKey = process.env.MAPS_API_KEY;
+    const response = await axios.get("https://geocode.maps.co/search", {
+      params: {
+        q: addressString,
+        api_key: apiKey,
+      },
+    });
+
+    address.latitude = parseFloat(response.data[0].lat);
+    address.longitude = parseFloat(response.data[0].lon);
 
     // Create a new manufacturer
     const newWholesaler = await prisma.wholesaler.create({
@@ -37,7 +56,7 @@ const signup = asyncHandler(async (req, res) => {
         }
       );
       res.cookie("jwt", token, {
-        httpOnly: true,
+        httpOnly: false,
         maxAge: 24 * 60 * 60 * 1000, // 1 day
       });
       res.status(201).json({
@@ -68,15 +87,16 @@ const login = asyncHandler(async (req, res) => {
   }
 
   // Generate a JWT token
+
   const token = jwt.sign(
-    { wholesalerId: wholesaler.id },
+    { wholesalerId: wholesaler.wholesaler_id },
     process.env.ACCESS_TOKEN_SECRET_USER,
     {
       expiresIn: "2h",
     }
   );
   res.cookie("jwt", token, {
-    httpOnly: true,
+    httpOnly: false,
     maxAge: 24 * 60 * 60 * 1000, // 1 day
   });
 

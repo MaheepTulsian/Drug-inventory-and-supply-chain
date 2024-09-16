@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model norification{
+model notification{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   title String
   body String
@@ -43,6 +43,8 @@ model Manufacturer_Address {
   city            String
   state           String
   postal_code     String
+  longitude       Float?
+  latitude        Float?
   country         String
   manufacturer_id String    @db.ObjectId // Foreign key
   manufacturer    Manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id])
@@ -61,9 +63,8 @@ model MedicinesGallery {
 model Batch {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
   batch_id         String    @unique
-  manufacture_date DateTime
+  manufacture_date DateTime  @default(now())
   expiry_date      DateTime
-  expiry_status    String
   quantity         Int  
   current_stock    Int // Track remaining stock for this batch
   reorder_threshold Int?  // Minimum stock before reorder is triggered
@@ -72,40 +73,34 @@ model Batch {
   mrp              Float
   selling_price    Float
   cost_price       Float
-  batch_status     String
+  batch_status     String @default("Active")
   medicines         MedicinesGallery @relation(fields: [medicine_id], references: [medicine_id])
   medicine_id      String    @db.ObjectId
 }
 
 model Sale {
   sale_id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  batch            sale_batch[] // One-to-many relationship with sale_batch
+  batch_id          String // One-to-many relationship with sale_batch
   sold_to          String  @db.ObjectId  //wholesaler_id
   sale_date        DateTime @default(now())
   discount_rate    Float?
-  final_price      Float
+  order_id          String
+  quantity          Int
+  status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
+  selling_price    Float
   product          MedicinesGallery @relation(fields: [medicine_id], references: [medicine_id])
   medicine_id      String    @db.ObjectId
 }
 
 
-model sale_batch{
-  id               String    @id @default(auto()) @map("_id") @db.ObjectId
-  batch_id         String   @db.ObjectId
-  quantity         Int
-  sale            Sale @relation(fields: [sale_id], references: [sale_id])
-  sale_id         String    @db.ObjectId
-}
-
 model Order_Received {
   order_id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  order_date       DateTime
+  order_date       DateTime @default(now())
   delivery_date    DateTime?
   status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
-  total_quantity   Int
-  total_price      Float @default(0.0) 
-  selling_price    Float
-  wholesaler_id      String    @db.ObjectId
+  total_quantity   Int?
+  total_price      Float @default(0.0) // Total price of all items in the order
+  wholesaler_id     String    @db.ObjectId
   manufacturer_id  String    @db.ObjectId
   manufacturer     Manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id])
   order_items      OrderItem[] // One-to-many relationship with OrderItem
@@ -113,23 +108,24 @@ model Order_Received {
 
 model OrderItem {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
-  order_id         String    @db.ObjectId
   quantity         Int
   medicine_id      String    @db.ObjectId
+  batch_id         String?    @db.ObjectId
   selling_price    Float
   order            Order_Received @relation(fields: [order_id], references: [order_id])
+  order_id         String    @db.ObjectId
 }
 
 //whole seller schema
 
 model Wholesaler {
   wholesaler_id    String    @id @default(auto()) @map("_id") @db.ObjectId
-  wholesaler_name     String    @unique
+  wholesaler_name  String    @unique
   email            String    @unique
   phone            String
   password         String
   website          String?
-  logo_url        String @default("https://res.cloudinary.com/dgljwzmsc/image/upload/v1726345502/Logo2_q8lity.png")
+  logo_url         String @default("https://res.cloudinary.com/dgljwzmsc/image/upload/v1726345502/Logo2_q8lity.png")
   GST_No           String    @unique
   address          Wholesaler_Address[]  // One-to-many relationship with Address
   medicines        Wholesaler_Medicines[]  // One-to-many relationship with MedicinesGallery
@@ -144,6 +140,8 @@ model Wholesaler_Address {
   city             String
   state            String
   postal_code      String
+  longitude       Float?
+  latitude        Float?
   country          String
   wholesaler_id    String    @db.ObjectId // Foreign key
   wholesaler       Wholesaler @relation(fields: [wholesaler_id], references: [wholesaler_id])
@@ -162,7 +160,7 @@ model Wholesaler_Batch {
   batch_id         String    @unique
   manufacture_date DateTime
   expiry_date      DateTime
-  expiry_status    String?
+  batch_status     String @default("Active")
   quantity         Int  
   current_stock    Int // Track remaining stock for this batch
   reorder_threshold Int?  // Minimum stock before reorder is triggered
@@ -178,11 +176,14 @@ model Wholesaler_Batch {
 model Wholesaler_Sold {
   sale_id          String    @id @default(auto()) @map("_id") @db.ObjectId
   batch_id         String
-  sold_to          String
-  sale_date        DateTime
-  quantity_sold    Int
+  sold_to          String  @db.ObjectId  //retailer_id
+  sale_date        DateTime @default(now())
   discount_rate    Float?
-  final_price      Float
+  order_id          String
+  quantity         Int
+  status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
+  selling_price      Float
+  medicine_id      String    @db.ObjectId
   sold          Wholesaler @relation(fields: [wholesaler_id], references: [wholesaler_id])
   wholesaler_id      String    @db.ObjectId
 }
@@ -191,53 +192,26 @@ model Wholesaler_Sold {
 
 model Wholesaler_Bought {
   bought_id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  batch             Wholesaler_bought_batches[] // One-to-many relationship with bought_batches
+  batch_id            String// One-to-many relationship with bought_batches
   bought_date        DateTime @default(now())
   discount_rate      Float?
-  total_price      Float
+  cost_price      Float?
+   quantity     Int
+   status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
+  order_id          String
   bought         Wholesaler @relation(fields: [wholesaler_id], references: [wholesaler_id])
   wholesaler_id      String    @db.ObjectId
    medicine_id      String    @db.ObjectId
 }
 
-model Wholesaler_bought_batches{
-  id               String    @id @default(auto()) @map("_id") @db.ObjectId
-  batch_id         String   @db.ObjectId
-  quantity         Int
-  bought            Wholesaler_Bought @relation(fields: [bought_id], references: [bought_id])
-  bought_id         String    @db.ObjectId
-}
-
-
-// model Wholesaler_Order {
-//   order_id         String    @id @default(auto()) @map("_id") @db.ObjectId
-//   order_date       DateTime
-//   delivery_date    DateTime?
-//   status           String @default("pending")    // e.g., 'pending', 'shipped', 'delivered'
-//   total_quantity   Int
-//   total_price      Float
-//   manufacturer_id  String  
-//   wholesaler_id    String    @db.ObjectId
-//   wholesaler       Wholesaler @relation(fields: [wholesaler_id], references: [wholesaler_id])
-//   order_items      Wholesaler_OrderItem[] // One-to-many relationship with OrderItem
-// }
-
-// model Wholesaler_OrderItem {
-//   id               String    @id @default(auto()) @map("_id") @db.ObjectId
-//   order_id         String    @db.ObjectId
-//   quantity         Int
-//   medicine_name    String
-//   medicine_id      String    @db.ObjectId
-//   order            Wholesaler_Order @relation(fields: [order_id], references: [order_id])
-// }
 
 model Wholesaler_Order_received {
   order_id         String    @id @default(auto()) @map("_id") @db.ObjectId
   order_date       DateTime
   delivery_date    DateTime?
-  status           String    // e.g., 'pending', 'shipped', 'delivered'
+  status           String  @default("pending")  // e.g., 'pending', 'shipped', 'delivered'
   total_quantity   Int
-  total_price      Float
+  total_price      Float   @default(0.0) // Total price of all items in the order
   retailer_id      String    @db.ObjectId
   wholesaler_id    String    @db.ObjectId
   wholesaler       Wholesaler @relation(fields: [wholesaler_id], references: [wholesaler_id])
@@ -247,11 +221,19 @@ model Wholesaler_Order_received {
 model Wholesaler_Order_received_item {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
   order_id         String    @db.ObjectId
-  batch_id         String    @db.ObjectId
+  batch_id         String?    @db.ObjectId
   quantity         Int
   medicine_name    String
   medicine_id      String    @db.ObjectId
   order            Wholesaler_Order_received @relation(fields: [order_id], references: [order_id])
+}
+
+model Wholesaler_return_manufacturer {
+  return_id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  return_date       DateTime  @default(now())
+  return_reason      String
+  return_description String
+  order_id           String
 }
 
 //retailer schema
@@ -266,7 +248,9 @@ model Retailer {
   GST_No           String    @unique
   address          Retailer_Address[]  // One-to-many relationship with Address
   medicines        Retailer_Medicines[]  // One-to-many relationship with Medicines
-  orders           Retailer_Order[]  // One-to-many relationship with Order
+  orders           Retailer_Order[] 
+  bought           Retailer_Bought[]
+  sold             Retailer_Sold[] 
   order_received   Retailer_OrderReceived[]  // One-to-many relationship with OrderReceived (for tracking purchases from wholesalers)
 }
 
@@ -276,6 +260,8 @@ model Retailer_Address {
   city             String
   state            String
   postal_code      String
+  longitude       Float?
+  latitude        Float?
   country          String
   retailer_id      String    @db.ObjectId // Foreign key
   retailer         Retailer @relation(fields: [retailer_id], references: [retailer_id])
@@ -286,8 +272,6 @@ model Retailer_Medicines {
   medicine_name    String
   category_name    String
   batches          Retailer_Batch[]
-  bought           Retailer_Bought[]
-  sold             Retailer_Sold[]
   retailer         Retailer @relation(fields: [retailer_id], references: [retailer_id])
   retailer_id      String    @db.ObjectId
 }
@@ -297,41 +281,46 @@ model Retailer_Batch {
   batch_id         String    @unique
   manufacture_date DateTime
   expiry_date      DateTime
-  expiry_status    String
+  batch_status     String @default("Active")
   quantity         Int  
   current_stock    Int // Track remaining stock for this batch
-  reorder_threshold Int  // Minimum stock before reorder is triggered
+  reorder_threshold Int?  // Minimum stock before reorder is triggered
   strip_quantity   Int    @default(0)
   tablets_per_strip Int   @default(0)
   mrp              Float
-  selling_price    Float
+  selling_price    Float @default(0.0)
   cost_price       Float
-  batch_status     String
-  medicines        Retailer_Medicines @relation(fields: [medicine_id], references: [medicine_id])
+  medicines         Retailer_Medicines @relation(fields: [medicine_id], references: [medicine_id])
   medicine_id      String    @db.ObjectId
 }
 
 model Retailer_Sold {
   sale_id          String    @id @default(auto()) @map("_id") @db.ObjectId
   batch_id         String
-  sold_to          String
-  sale_date        DateTime
-  quantity_sold    Int
+  sold_to          String  @db.ObjectId  //retailer_id
+  sale_date        DateTime @default(now())
   discount_rate    Float?
-  final_price      Float
-  product          Retailer_Medicines @relation(fields: [medicine_id], references: [medicine_id])
+  order_id          String
+  quantity         Int
+  status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
+  selling_price      Float
   medicine_id      String    @db.ObjectId
+  sold            Retailer @relation(fields: [retailer_id], references: [retailer_id])
+  retailer_id      String    @db.ObjectId
 }
 
 model Retailer_Bought {
-  sale_id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  batch_id         String
-  bought_date      DateTime
-  quantity_bought  Int
-  discount_rate    Float?
-  final_price      Float
-  product          Retailer_Medicines @relation(fields: [medicine_id], references: [medicine_id])
-  medicine_id      String    @db.ObjectId
+  bought_id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  batch_id            String// One-to-many relationship with bought_batches
+  bought_date        DateTime @default(now())
+  discount_rate      Float?
+  cost_price      Float?
+   quantity     Int
+   status           String  @default("pending")   // e.g., 'pending', 'shipped', 'delivered'
+  order_id          String
+  bought         Retailer @relation(fields: [retailer_id], references: [retailer_id])
+   retailer_id      String    @db.ObjectId
+   medicine_id      String    @db.ObjectId
 }
 
 model Retailer_Order {

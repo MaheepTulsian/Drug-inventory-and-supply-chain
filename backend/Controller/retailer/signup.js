@@ -1,17 +1,20 @@
-import express from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import prisma from "../../prisma/index.js";
 import asyncHandler from "express-async-handler";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import axios from "axios";
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 const signup = asyncHandler(async (req, res) => {
-  const { company_name, email, phone, password, website, GST_No, address } =
+  const { retailer_name, email, phone, password, website, GST_No, address } =
     req.body;
 
+  const user = await prisma.retailer.findUnique({
+    where: { email },
+  });
+  if (user) {
+    res.json({ message: "Retailer  with this mail already exists" });
+  }
+
+  const salt = await bcrypt.genSalt(10);
   try {
     console.log("Address received:", address);
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -38,9 +41,9 @@ const signup = asyncHandler(async (req, res) => {
     address.longitude = parseFloat(response.data[0].lon);
 
     // Create a new manufacturer
-    const newManufacturer = await prisma.manufacturer.create({
+    const newRetailer = await prisma.retailer.create({
       data: {
-        company_name,
+        retailer_name,
         email,
         phone,
         password: hashedPassword, // Store the hashed password
@@ -55,9 +58,9 @@ const signup = asyncHandler(async (req, res) => {
       },
     });
 
-    if (newManufacturer) {
+    if (newRetailer) {
       const token = jwt.sign(
-        { manufacturerId: newManufacturer.id },
+        { retailerId: newRetailer.id },
         process.env.ACCESS_TOKEN_SECRET_USER,
         {
           expiresIn: "1d",
@@ -68,8 +71,8 @@ const signup = asyncHandler(async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000, // 1 day
       });
       res.status(201).json({
-        message: "Manufacturer created successfully!",
-        manufacturer: newManufacturer,
+        message: "retailer created successfully!",
+        manufacturer: newRetailer,
         cookie: token,
       });
     }
@@ -80,52 +83,47 @@ const signup = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const manufacturer = await prisma.manufacturer.findUnique({
-    where: { email },
-  });
+    const retailer = await prisma.retailer.findUnique({
+      where: { email },
+    });
+    if (!retailer) {
+      return res.status(401).json({ message: "Retailer not found" });
+    }
 
-  if (!manufacturer) {
-    return res.status(401).json({ message: "Manufacturer not found" });
+    const validPassword = await bcrypt.compare(password, retailer.password);
+    if (!validPassword) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    const token = jwt.sign(
+      { retailerId: retailer.id },
+      process.env.ACCESS_TOKEN_SECRET_USER,
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    res.cookie("jwt", token, {
+      httpOnly: false,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
+    res.status(200).json({
+      message: "Retailer logged in successfully",
+      retailer,
+      cookie: token,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred during login" });
   }
-
-  const passwordMatch = await bcrypt.compare(password, manufacturer.password);
-
-  // If password does not match
-  if (!passwordMatch) {
-    return res.status(401).json({ message: "Invalid password" });
-  }
-
-  // Generate a JWT token
-  const token = jwt.sign(
-    { manufacturerId: manufacturer.manufacturer_id }, // Ensure you use the correct field for ID
-    process.env.ACCESS_TOKEN_SECRET_USER,
-    { expiresIn: "1d" }
-  );
-
-  // Set the token in an HTTP-only cookie
-  res.cookie("jwt", token, {
-    httpOnly: false,
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-  });
-
-  // Respond with success
-  res.status(200).json({
-    message: "Manufacturer logged in successfully!",
-    manufacturer,
-    token, // Send the token in the response if needed
-  });
 });
 
 const logout = asyncHandler(async (req, res) => {
-  try {
-    res.cookie("jwt", "", { maxAge: 1 });
-    res.status(200).json({ message: "Logged out successfully!" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "An error occurred during logout." });
-  }
+  res.cookie("jwt", "", { maxAge: 1 });
+  res.status(200).json({ message: "Logged out successfully" });
 });
 
 export { signup, login, logout };
