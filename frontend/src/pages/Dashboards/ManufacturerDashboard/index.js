@@ -22,7 +22,7 @@ export { default as Line } from "./scenes/line/index";
 export { default as Pie } from "./scenes/pie/index";
 export { default as Dashboard } from "./scenes/dashboard/index";
 export { default as DateTime } from "./scenes/DateTime/index";
-export { default as Form } from "./scenes/Form/index";
+export { default as Form } from "./scenes/form/index";
 export { default as Inventory } from "./scenes/inventory/index";
 export { default as InventoryDetails } from "./scenes/inventory/InventoryDetails";
 export { default as Orders } from "./scenes/orders/index";
