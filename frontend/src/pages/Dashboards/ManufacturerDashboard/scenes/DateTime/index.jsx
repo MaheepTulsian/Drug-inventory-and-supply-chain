@@ -28,7 +28,6 @@ const TimeCard = () => {
         justifyContent: 'center',
         alignItems: 'flex-start',
         flexDirection: 'column',
-        color: 'white',
         padding: 2,
         position: 'relative',
         cursor: 'pointer',

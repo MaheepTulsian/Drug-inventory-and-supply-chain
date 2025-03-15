@@ -9,6 +9,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import HealingIcon from '@mui/icons-material/Healing';
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import AdsClickIcon from '@mui/icons-material/AdsClick';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
@@ -90,19 +91,19 @@ const Sidebar = () => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
-              to="/manufacturer-dashboard"
+              to="/dashboard"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
 
-            <Item
+            {/* <Item
               title="Profile"
               to="./profile"
               icon={<AccountBox />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
 
             <Item
               title="Inventory"
@@ -121,12 +122,20 @@ const Sidebar = () => {
             />
 
             <Item
+              title="Find Others"
+              to="./findothers"
+              icon={<AdsClickIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+            {/* <Item
               title="Return Requests"
               to="./returns"
               icon={<KeyboardReturnIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
 
             <Item
               title="Sales Information"

@@ -24,30 +24,32 @@ const App = () => {
               <Route path="*" element={<NotFound />} />
               <Route path="/auth" element={<Auth />} />
 
-              <Route path="/manufacturer-dashboard" element={
-                  <ProtectedRoute>
+              <Route path="/dashboard" element={
+                  // <ProtectedRoute>
                     <ManufacturerDashboard />
-                  </ProtectedRoute>
+                  // </ProtectedRoute>
                 }>
-                <Route path="/manufacturer-dashboard/" element={<Dashboard />} />
-                <Route path="/manufacturer-dashboard/profile" element={<Profile />} />
-                <Route path="/manufacturer-dashboard/inventory" element={<Inventory />} />
-                <Route path="/manufacturer-dashboard/inventory/:id" element={<InventoryDetails />} />
-                <Route path="/manufacturer-dashboard/orders" element={<Orders />} />
-                <Route path="/manufacturer-dashboard/orders/:id" element={<OrderDetails />} />
-                <Route path="/manufacturer-dashboard/returns" element={<Returns />} />
-                <Route path="/manufacturer-dashboard/returns/:id" element={<ReturnDetails />} />
-                <Route path="/manufacturer-dashboard/sales" element={<Sales />} />
-                <Route path="/manufacturer-dashboard/list-medicine" element={<Form />} />
-                <Route path="/manufacturer-dashboard/bar" element={<Bar />} />
-                <Route path="/manufacturer-dashboard/pie" element={<Pie />} />
-                <Route path="/manufacturer-dashboard/line" element={<Line />} />
+                <Route path="/dashboard/" element={<Dashboard />} />
+                {/* <Route path="/dashboard/profile" element={<Profile />} /> */}
+                <Route path="/dashboard/inventory" element={<Inventory />} />
+                <Route path="/dashboard/inventory/:id" element={<InventoryDetails />} />
+                <Route path="/dashboard/orders" element={<Orders />} />
+                <Route path="/dashboard/orders/:id" element={<OrderDetails />} />
+                <Route path="/dashboard/findothers" element={<MapManufacturer />} />
+                <Route path="/dashboard/findothers/:id" element={<MapManufacturerDetails />} />
+                {/* <Route path="/dashboard/returns" element={<Returns />} />
+                <Route path="/dashboard/returns/:id" element={<ReturnDetails />} /> */}
+                <Route path="/dashboard/sales" element={<Sales />} />
+                <Route path="/dashboard/list-medicine" element={<Form />} />
+                <Route path="/dashboard/bar" element={<Bar />} />
+                <Route path="/dashboard/pie" element={<Pie />} />
+                <Route path="/dashboard/line" element={<Line />} />
               </Route>
 
-              <Route path="/distributor-dashboard" element={
-                  <ProtectedRoute>
+              {/* <Route path="/distributor-dashboard" element={
+                  // <ProtectedRoute>
                     <DistributorDashboard />
-                  </ProtectedRoute>
+                  // </ProtectedRoute>
                 }>
                 <Route path="/distributor-dashboard/" element={<Dashboard />} />
                 <Route path="/distributor-dashboard/profile" element={<Profile />} />
@@ -65,7 +67,7 @@ const App = () => {
                 <Route path="/distributor-dashboard/bar" element={<Bar />} />
                 <Route path="/distributor-dashboard/pie" element={<Pie />} />
                 <Route path="/distributor-dashboard/line" element={<Line />} />
-              </Route>
+              </Route> */}
 
             </Routes>
           </Router>

@@ -7,6 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Logo1 from "../../../../../assets/Logo_Dark.png";
 import Logo2 from "../../../../../assets/Logo_Light.png";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Topbar = () => {
   const theme = useTheme();
@@ -68,18 +69,18 @@ const Topbar = () => {
     <Box display="flex" justifyContent="space-between" p={2}>
 
       {/* Company Name */}
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        color={tokens(theme.palette.mode).textColor}
-        fontSize={20}
-        fontWeight="bold"
-      >
-        {/* Logo */}
-        <img src={Logo} alt="logo" style={{ width: 40, height: 40, marginRight: 10 }} />
-        {data.company_name}
-      </Box>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          color={tokens(theme.palette.mode).textColor}
+          fontSize={20}
+          fontWeight="bold"
+        >
+          {/* Logo */}
+          MedTrack
+        </Box>
+      
 
       {/* ICONS */}
       <Box display="flex" gap={2}>
@@ -92,6 +93,7 @@ const Topbar = () => {
         </IconButton>
         
         {/* Logout Button */}
+        <Link to="/">
         <Button
           variant="contained"
           color="secondary"
@@ -101,6 +103,7 @@ const Topbar = () => {
         >
           Logout
         </Button>
+        </Link> 
       </Box>
     </Box>
   );
